@@ -53,7 +53,7 @@ public class DictionaryManagement {
 	}
 	public void dictionaryExportToFile(){
 		try {
-			BufferedWriter writer = new BufferedWriter(new FileWriter("C:\\Users\\hh1305\\LONG\\JAVA\\Dictionary\\dictionaries.txt"));
+			BufferedWriter writer = new BufferedWriter(new FileWriter(arrWords.getADDRESSFILE() + "output.txt"));
 			for(Word a : arrWords.getWords()){
 				writer.write(a.getWordE() + '\t' + a.getWordVi() + '\n');
 			}
@@ -66,12 +66,12 @@ public class DictionaryManagement {
 	}
 	public void insertFromFile(){
 		try{
-			BufferedReader read = new BufferedReader(new FileReader("C:\\Users\\hh1305\\LONG\\JAVA\\Dictionary\\dictionaries.txt"));
+			BufferedReader read = new BufferedReader(new FileReader(arrWords.getADDRESSFILE() + "data.txt"));
 			int data = read.read();
 			ArrayList<String> arrString = new ArrayList<String>();
 			String word = "";
 			while(data != -1){
-				if((char)data == '\t' || (char)data == '\n' && !word.isEmpty()){
+				if((char)data == '\n' && !word.isEmpty()){
 					arrString.add(word.trim());
 					word = "";
 				}

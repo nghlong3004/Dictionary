@@ -7,7 +7,7 @@ public class DictionaryApplication {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				// TODO Auto-generated method stub
-				new Windows().setVisible(true);
+				new DictionaryFrame().setVisible(true);
 			}
 		});
 	}
