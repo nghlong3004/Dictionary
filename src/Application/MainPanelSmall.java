@@ -53,6 +53,11 @@ public class MainPanelSmall extends JPanel{
 		image = new ImageIcon(new Dictionary().getADDRESSIMAGE() + "MenuBig.png");
 		textLabel.setIcon(new ImageIcon(image.getImage().getScaledInstance(400, 150, Image.SCALE_SMOOTH)));
 		textLabel.setVerticalTextPosition(JLabel.CENTER);
+		add.setFocusable(false);
+		edit.setFocusable(false);
+		delete.setFocusable(false);
+		exit.setFocusable(false);
+		buttonMenu.setFocusable(false);
 		image = new ImageIcon(new Dictionary().getADDRESSIMAGE() + "Add.png");
 		add.setIcon(new ImageIcon(image.getImage()));
 		add.setBackground(Color.white);

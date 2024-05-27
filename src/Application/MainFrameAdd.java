@@ -4,9 +4,12 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.TreeMap;
 
 import javax.swing.*;
+
+import Sever.GoogleTranslate;
 
 public class MainFrameAdd extends JFrame implements ActionListener{
 	/**
@@ -17,10 +20,10 @@ public class MainFrameAdd extends JFrame implements ActionListener{
 	private JTextField textKey, textValue;
 	private JPanel panel;
 	private JLabel labelKey, labelValue;
-	private JButton buttonKey, buttonValue;
+	private JButton buttonKey, buttonValue, se;
 	private ImageIcon image;
-	private boolean flag = true;
 	private TreeMap<String, String> tree;
+	private boolean flag = true;
 	
 	public MainFrameAdd(TreeMap<String, String> tree) {
 		// TODO Auto-generated constructor stub
@@ -28,6 +31,7 @@ public class MainFrameAdd extends JFrame implements ActionListener{
 		this.tree = tree;
 		pack();
 		handle();
+		panel.setBackground(Color.white);
 		setBounds(100, 100, 315, 200);
 		setIconImage(image.getImage());
 		getContentPane().add(panel);
@@ -37,6 +41,7 @@ public class MainFrameAdd extends JFrame implements ActionListener{
 		
 	}
 	public void handle(){
+		se = new MainButton();
 		panel = new JPanel();
 		frame = new MainFrame();
 		image = new ImageIcon(frame.getSolve().getArr().getOpen().getArrWords().getADDRESSIMAGE() + "Add.png");
@@ -56,6 +61,14 @@ public class MainFrameAdd extends JFrame implements ActionListener{
 		labelKey.setBounds(0, 0, 50, 50);
 		labelValue.setBounds(0,  81, 50, 50);
 		labelKey.setText("EngLish");
+		se.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				buttonPef(e);
+			}
+		});
 		labelKey.setHorizontalAlignment(JLabel.CENTER);
 		labelValue.setText("VN");
 		labelValue.setHorizontalAlignment(JLabel.CENTER);
@@ -73,6 +86,32 @@ public class MainFrameAdd extends JFrame implements ActionListener{
 		panel.add(labelValue);
 		panel.add(textKey);
 		panel.add(textValue);
+		panel.add(se);
+	}
+	public void setText(String value){
+		textValue.setText(value);
+	}
+	@SuppressWarnings("static-access")
+	public void buttonPef(ActionEvent e){
+		final String key = textKey.getText();
+		key.trim();
+		String value = null;
+		if(key.length() > 0){
+			try {
+				value = (new GoogleTranslate().translate(key, "En", "vi"));
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			textValue.setText(value);
+			flag = false;
+			buttonKey.setVisible(false);
+			buttonValue.setVisible(true);
+			textValue.setEditable(true);
+		}
+		else{
+			JOptionPane.showMessageDialog(this, "Error", "Message", JOptionPane.ERROR_MESSAGE);
+		}
 	}
 	@Override
 	public void actionPerformed(ActionEvent e) {

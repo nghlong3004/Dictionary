@@ -29,6 +29,7 @@ public class MainFrameEdit extends JFrame implements ActionListener{
 		pack();
 		handle();
 		setBounds(100, 100, 315, 200);
+		panel.setBackground(Color.white);
 		setIconImage(image.getImage());
 		getContentPane().add(panel);
 		setResizable(false);

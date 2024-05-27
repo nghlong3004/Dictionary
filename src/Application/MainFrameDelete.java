@@ -33,6 +33,7 @@ public class MainFrameDelete extends JFrame implements ActionListener{
 		pack();
 		handle();
 		setBounds(100, 100, 315, 200);
+		panel.setBackground(Color.white);
 		getContentPane().add(panel);
 		setResizable(false);
 		setLocationRelativeTo(null);
