@@ -1,1 +1,1 @@
-EN - VI Dictionary
+Dictionary - USING API GOOGLE

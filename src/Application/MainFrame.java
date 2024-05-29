@@ -49,7 +49,7 @@ public class MainFrame extends JFrame implements ActionListener{
 	}
 	public void menuEvent(ActionEvent e){
 		this.buttonMenu.setVisible(false);
-		solve.getTextKey().setEditable(false);
+		solve.getTextKey().setEnabled(false);
 		new Thread(new Runnable() {
 			@Override
 			public void run() {

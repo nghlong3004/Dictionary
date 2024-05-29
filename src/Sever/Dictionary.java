@@ -5,9 +5,17 @@ import java.util.TreeMap;
 public class Dictionary {
 	private final String ADDRESSIMAGE = "image\\";
 	private final String ADDRESSFILE = "data.txt";
-	private final String ADDRESSAPI = "https://script.google.com/macros/s/AKfycbwU7msuEL2UyzONn_I9m2HMG9FarUKOlmn6jbKIKhPx8Vd1QkqtxnQokl8R792zRrDQ/exec";
+	public String getADDRESSAPIAUDIO() {
+		return ADDRESSAPIAUDIO;
+	}
+	private final String ADDRESSAPISEARCH = "https://clients1.google.com/complete/search";
+	public String getADDRESSAPISEARCH() {
+		return ADDRESSAPISEARCH;
+	}
+	private final String ADDRESSAPIAUDIO = "http://translate.google.com/translate_tts";
+	private final String ADDRESSAPITRANS = "https://script.google.com/macros/s/AKfycbwU7msuEL2UyzONn_I9m2HMG9FarUKOlmn6jbKIKhPx8Vd1QkqtxnQokl8R792zRrDQ/exec";
 	public String getADDRESSAPI() {
-		return ADDRESSAPI;
+		return ADDRESSAPITRANS;
 	}
 	private final int H = 60, W = 450;
 	public int getH() {

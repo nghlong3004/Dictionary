@@ -11,5 +11,10 @@
 	<classpathentry kind="lib" path="C:/Users/hh1305/LONG/JAVA/Dictionary/image/freetts-1.2/lib/freetts.jar"/>
 	<classpathentry kind="lib" path="C:/Users/hh1305/LONG/JAVA/Dictionary/image/freetts-1.2/lib/freetts-jsapi10.jar"/>
 	<classpathentry kind="lib" path="C:/Users/hh1305/LONG/JAVA/Dictionary/image/freetts-1.2/lib/mbrola.jar"/>
+	<classpathentry kind="lib" path="C:/Users/hh1305/LONG/JAVA/Dictionary/image/jlayer-1.0.1-javadoc.jar"/>
+	<classpathentry kind="lib" path="C:/Users/hh1305/LONG/JAVA/Dictionary/image/jlayer-1.0.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/hh1305/LONG/JAVA/Dictionary/image/jlayer-1.0.1-sources.jar"/>
+	<classpathentry kind="lib" path="C:/Users/hh1305/LONG/JAVA/Dictionary/image/json-simple-1.1.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/hh1305/LONG/JAVA/Dictionary/image/json-simple-1.1.1-javadoc.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

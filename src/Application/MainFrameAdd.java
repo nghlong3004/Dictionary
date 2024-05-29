@@ -62,7 +62,6 @@ public class MainFrameAdd extends JFrame implements ActionListener{
 		labelValue.setBounds(0,  81, 50, 50);
 		labelKey.setText("EngLish");
 		se.addActionListener(new ActionListener() {
-			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub

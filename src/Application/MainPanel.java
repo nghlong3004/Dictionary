@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.IOException;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -26,10 +27,7 @@ import javax.swing.event.ListSelectionListener;
 
 import Sever.Dictionary;
 import Sever.DictionaryCommandLine;
-
-import com.sun.speech.freetts.Voice;
-import com.sun.speech.freetts.VoiceManager;
-
+import Sever.GoogleTranslate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -100,24 +98,24 @@ public class MainPanel extends JPanel{
 		Image cur = image.getImage().getScaledInstance(30, 30, Image.SCALE_DEFAULT);
 		voiceButton.setIcon(new ImageIcon(cur));
 		voiceButton.setBackground(Color.white);
+		voiceButton.setFocusable(false);
 		voiceButton.setHorizontalTextPosition(JButton.CENTER);
 		voiceButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				String key = textKey.getText();
+				final String key = textKey.getText();
 				if(key.length() > 0){
 					Thread voiceThread = new Thread(new Runnable() {
-	                    @Override
+	                    @SuppressWarnings("static-access")
+						@Override
 	                    public void run() {
-	                        Voice voice = VoiceManager.getInstance().getVoice("kevin");
-	                        if(voice !=  null){
-	                        	voice.allocate();
-		                        voice.setRate(120);
-		                        voice.setPitch(110);
-		                        voice.speak(textKey.getText());
-		                        voice.deallocate();
-	                        }
+							try {
+								new GoogleTranslate().speak(key);
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
 	                    }
 	                });
 	                voiceThread.start();

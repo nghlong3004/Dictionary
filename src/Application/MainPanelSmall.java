@@ -110,6 +110,6 @@ public class MainPanelSmall extends JPanel{
 			}
 		}).start();
 		this.buttonMenu.setVisible(true);
-		this.solve.setEditable(true);
+		this.solve.setEnabled(true);
 	}
 }
