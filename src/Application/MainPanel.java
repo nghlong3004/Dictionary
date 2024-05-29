@@ -27,7 +27,8 @@ import javax.swing.event.ListSelectionListener;
 
 import Sever.Dictionary;
 import Sever.DictionaryCommandLine;
-import Sever.GoogleTranslate;
+import Sever.GoogleAudio;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -111,7 +112,7 @@ public class MainPanel extends JPanel{
 						@Override
 	                    public void run() {
 							try {
-								new GoogleTranslate().speak(key);
+								new GoogleAudio().speak(key);
 							} catch (IOException e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
