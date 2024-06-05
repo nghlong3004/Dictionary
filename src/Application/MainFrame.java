@@ -10,9 +10,11 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JLayeredPane;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.Timer;
 
 public class MainFrame extends JFrame implements ActionListener{
 	/**
@@ -27,6 +29,7 @@ public class MainFrame extends JFrame implements ActionListener{
 	private Panel solve;
 	private PanelSmaill menuPanel;
 	private JButton buttonMenu ;
+	private JLayeredPane layeredPane;
 	public void setButtonMenu(JButton buttonMenu) {
 		this.buttonMenu = buttonMenu;
 	}
@@ -41,30 +44,42 @@ public class MainFrame extends JFrame implements ActionListener{
 		setBounds(0, 0, solve.getArr().getOpen().getArrWords().getH() * 30 - 30 >> 1, 962);
 		image = new ImageIcon(solve.getArr().getOpen().getArrWords().getADDRESSIMAGE() + "Avatar.jpg");
 		setIconImage(image.getImage());
-		add(menuPanel);
-		add(solve);
+	    add(layeredPane);
 		setResizable(false);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
-	public void menuEvent(ActionEvent e){
-		this.buttonMenu.setVisible(false);
-		solve.getTextKey().setEnabled(false);
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				// TODO Auto-generated method stub
-				for(int i = 0; i <= 400; ++i){
-					try {
-						menuPanel.setBounds(0, 0, i, 962);
-						Thread.sleep(1);
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
-			}
-		}).start();
+	public void menuEvent(ActionEvent e) {
+	    this.buttonMenu.setVisible(false);
+	    solve.resetClick();
+	    Timer animationTimer = new Timer(0, new ActionListener() {
+	        private int startWidth = 0;
+	        private int targetWidth = 400;
+	        private long startTime = System.currentTimeMillis();
+	        private long duration = 500;
+
+	        @Override
+	        public void actionPerformed(ActionEvent e) {
+	            long currentTime = System.currentTimeMillis();
+	            long elapsedTime = currentTime - startTime;
+	            double t = (double) elapsedTime / duration;
+
+	            if (t >= 1) {
+	                t = 1;
+	                ((Timer) e.getSource()).stop();
+	            }
+	            double easedValue = easeOutCubic(t); 
+	            int currentWidth = (int) (startWidth + (targetWidth - startWidth) * easedValue);
+
+	            menuPanel.setBounds(0, 0, currentWidth, 962);
+	        }
+	    });
+
+	    animationTimer.start();
+	}
+
+	private double easeOutCubic(double t) {
+	    return 1 - Math.pow(1 - t, 3);
 	}
 	public void newImplement(){
 		solve = new Panel();
@@ -78,6 +93,10 @@ public class MainFrame extends JFrame implements ActionListener{
 		saveItem = new JMenuItem("Save");
 		exitItem = new JMenuItem("Exit");
 		image = new ImageIcon(solve.getArr().getOpen().getArrWords().getADDRESSIMAGE() + "Menus.png");
+		layeredPane = new JLayeredPane();
+		layeredPane.add(menuPanel, JLayeredPane.PALETTE_LAYER);
+	    layeredPane.add(solve, JLayeredPane.DEFAULT_LAYER);
+	    layeredPane.moveToFront(menuPanel); 
 		initMenuBar();
 	}
 	public void initMenuBar(){
@@ -118,13 +137,13 @@ public class MainFrame extends JFrame implements ActionListener{
 			solve.getArr().getOpen().dictionaryExportToFile();
 		}
 		else if(e.getSource() == addItem){
-			new Add(solve.getArr().getOpen().getArrWords().getTree()).setVisible(true);
+			new Add(solve).setVisible(true);
 		}
 		else if(e.getSource() == deleteItem){
-			new Delete(solve.getArr().getOpen().getArrWords().getTree()).setVisible(true);
+			new Delete(solve).setVisible(true);
 		}
 		else if(e.getSource() == editItem){
-			new Edit(solve.getArr().getOpen().getArrWords().getTree()).setVisible(true);
+			new Edit(solve).setVisible(true);
 		}
 	}
 	

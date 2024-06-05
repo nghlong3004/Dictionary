@@ -5,13 +5,11 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.util.Map;
 
 import javax.swing.*;
 
 import Sever.Dictionary;
 import Sever.DictionaryCommandLine;
-import Sever.DictionaryManagement;
 import Sever.GoogleTranslate;
 
 public class Add extends JFrame implements ActionListener{
@@ -19,19 +17,18 @@ public class Add extends JFrame implements ActionListener{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private MainFrame frame;
 	private JTextField textKey, textValue;
 	private JPanel panel;
 	private JLabel labelKey, labelValue;
 	private JButton buttonKey, buttonValue, se;
 	private ImageIcon image;
-	private Map<String, String> tree;
+	private Panel solve;
 	private boolean flag = true;
 	
-	public Add(Map<String, String> tree) {
+	public Add(Panel solve) {
 		// TODO Auto-generated constructor stub
 		super("Add Vocabulary");
-		this.tree = tree;
+		this.solve = solve;
 		pack();
 		handle();
 		panel.setBackground(Color.white);
@@ -46,7 +43,6 @@ public class Add extends JFrame implements ActionListener{
 	public void handle(){
 		se = new Button();
 		panel = new JPanel();
-		frame = new MainFrame();
 		image = new ImageIcon(new Dictionary().getADDRESSIMAGE() + "Add.png");
 		buttonKey = new JButton("OK!!");
 		buttonValue = new JButton("OK!!");
@@ -133,8 +129,8 @@ public class Add extends JFrame implements ActionListener{
 		}
 		else{
 			value = textValue.getText();
-			tree.put(key, value);
-			new DictionaryManagement().dictionaryExportToFile();
+			solve.getArr().getOpen().getArrWords().getTree().put(key, new Dictionary().parseHTML(key, value));
+			solve.getArr().getOpen().dictionaryExportToFile();
 			JOptionPane.showMessageDialog(this, "added vocabulary successfully", "Message", JOptionPane.PLAIN_MESSAGE, null);
 			this.dispose();
 		}

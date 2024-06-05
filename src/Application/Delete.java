@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Map;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -22,17 +21,16 @@ public class Delete extends JFrame implements ActionListener{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private MainFrame frame;
 	private JTextField textKey;
 	private JPanel panel;
 	private JLabel labelKey;
 	private JButton buttonKey;
 	private boolean flag = true;
-	private Map<String, String> tree;
+	private Panel solve;
 	
-	public Delete(Map<String, String> tree) {
+	public Delete(Panel solve) {
 		super("Delete");
-		this.tree = tree;
+		this.solve = solve;
 		pack();
 		handle();
 		setBounds(100, 100, 315, 200);
@@ -44,7 +42,6 @@ public class Delete extends JFrame implements ActionListener{
 	}
 	public void handle(){
 		panel = new JPanel();
-		frame = new MainFrame();
 		buttonKey = new JButton("OK!!");
 		buttonKey.setBounds(250 >> 1, 110, 50, 30);
 		buttonKey.setFont(new Font("Cambria", Font.ITALIC, 8));
@@ -67,11 +64,11 @@ public class Delete extends JFrame implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		String key = textKey.getText();
-		String value = new DictionaryCommandLine().dictionarySearcher(key, flag);
+		String value = solve.getArr().dictionarySearcher(key, flag);
 		if(value != null){
-			tree.remove(key);
+			solve.getArr().getOpen().getArrWords().getTree().remove(key);
 			JOptionPane.showMessageDialog(this, "Delete vocabulary successfully", "Message", JOptionPane.PLAIN_MESSAGE, null);
-			new DictionaryManagement().dictionaryExportToFile();
+			solve.getArr().getOpen().dictionaryExportToFile();
 			this.dispose();
 		}
 		else{

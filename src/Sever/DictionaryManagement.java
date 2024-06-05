@@ -14,9 +14,9 @@ public class DictionaryManagement {
 	}
 	public void dictionaryExportToFile(){
 		try {
-			BufferedWriter writer = new BufferedWriter(new FileWriter(new Dictionary().getADDRESSFILE()));
-			for(Map.Entry<String, String>entry: new Dictionary().getTree().entrySet()){
-				writer.write(entry.getKey() + '\t' + entry.getValue() + '\n');
+			BufferedWriter writer = new BufferedWriter(new FileWriter("newData.txt"));
+			for(Map.Entry<String, String>entry: dictionary.getTree().entrySet()){
+				writer.write(entry.getKey() + entry.getValue() + '\n');
 			}
 			writer.close();
 		} catch (IOException e) {

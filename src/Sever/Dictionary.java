@@ -5,9 +5,12 @@ import java.util.TreeMap;
 
 public class Dictionary {
 	private final String ADDRESSIMAGE = "image\\";
-	private final String ADDRESSFILE = "image\\E_V.txt";
+	private final String ADDRESSFILE = "data.txt";
 	public String getADDRESSAPIAUDIO() {
 		return ADDRESSAPIAUDIO;
+	}
+	public String parseHTML(String key, String value){
+		return "<html><i>" + key + "</i><br/><ul><li><font color='#cc0000'><b>" + value + "</b></font></li></ul></html>";
 	}
 	private final String ADDRESSAPISEARCH = "https://clients1.google.com/complete/search";
 	public String getADDRESSAPISEARCH() {

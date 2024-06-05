@@ -93,23 +93,36 @@ public class PanelSmaill extends JPanel{
 	public void Run(int i){
 		this.setBounds(0, 0, i, 962);
 	}
-	public void exitMenu(ActionEvent e){
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-			// TODO Auto-generated method stub
-				for(int i = 400; i >= 0; --i){
-					try {
-						Run(i);
-						Thread.sleep(1);
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
-			}
-		}).start();
-		this.buttonMenu.setVisible(true);
-		this.solve.setEnabled(true);
+	private double easeOutCubic(double t) {
+	    return 1 - Math.pow(1 - t, 3);
+	}
+	public void exitMenu(ActionEvent e) {
+	    Timer animationTimer = new Timer(1, new ActionListener() {
+	        private int startWidth = 400;
+	        private int targetWidth = 0;
+	        private long startTime = System.currentTimeMillis();
+	        private long duration = 500;
+
+	        @Override
+	        public void actionPerformed(ActionEvent e) {
+	            long currentTime = System.currentTimeMillis();
+	            long elapsedTime = currentTime - startTime;
+	            double t = (double) elapsedTime / duration;
+
+	            if (t >= 1) {
+	                t = 1;
+	                ((Timer) e.getSource()).stop();
+	                buttonMenu.setVisible(true);
+	                solve.setEnabled(true);
+	            }
+
+	            double easedValue = easeOutCubic(t); 
+	            int currentWidth = (int) (startWidth + (targetWidth - startWidth) * easedValue);
+
+	            Run(currentWidth); 
+	        }
+	    });
+
+	    animationTimer.start();
 	}
 }

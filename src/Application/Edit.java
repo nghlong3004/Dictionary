@@ -4,32 +4,29 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Map;
 
 import javax.swing.*;
 
 import Sever.Dictionary;
 import Sever.DictionaryCommandLine;
-import Sever.DictionaryManagement;
 
 public class Edit extends JFrame implements ActionListener{
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private MainFrame frame;
 	private JTextField textKey, textValue;
 	private JPanel panel;
 	private JLabel labelKey, labelValue;
 	private JButton buttonValue;
 	private boolean flag = true;
 	private ImageIcon image;
-	private Map<String, String> tree;
+	private Panel solve;
 	
-	public Edit(Map<String, String> tree) {
+	public Edit(Panel solve) {
 		// TODO Auto-generated constructor stub
 		super("Edit Vocabulary");
-		this.tree = tree;
+		this.solve = solve;
 		pack();
 		handle();
 		setBounds(100, 100, 315, 200);
@@ -43,7 +40,6 @@ public class Edit extends JFrame implements ActionListener{
 	}
 	public void handle(){
 		panel = new JPanel();
-		frame = new MainFrame();
 		image = new ImageIcon(new Dictionary().getADDRESSIMAGE() + "Edit.png");
 		buttonValue = new JButton("OK!!");
 		buttonValue.setBounds(( 250 )>> 1, 102, 50, 30);
@@ -81,8 +77,8 @@ public class Edit extends JFrame implements ActionListener{
 		}
 		else{
 			value = textValue.getText();
-			tree.put(key, value);
-			new DictionaryManagement().dictionaryExportToFile();
+			solve.getArr().getOpen().getArrWords().getTree().put(key, new Dictionary().parseHTML(key, value));
+			solve.getArr().getOpen().dictionaryExportToFile();
 			JOptionPane.showMessageDialog(this, "Successful vocabulary revision", "Message", JOptionPane.PLAIN_MESSAGE, null);
 			this.dispose();
 		}

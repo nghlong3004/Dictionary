@@ -85,7 +85,7 @@ public class Panel extends JPanel{
 	}
 	public void resetClick(){
 		textKey.setText("");
-		textValue.setText("");
+		textValue.setText("<html><i>Definition</i><html>");
 		textSearch.setText("Search");
 		textSearch.setVisible(true);
 		ArrayList<String> list = new ArrayList<String>();
@@ -121,7 +121,14 @@ public class Panel extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				final String key = textKey.getText();
+				String oldKey = "";
+				if(listArray.getSelectedValue() != null){
+					oldKey = listArray.getSelectedValue();
+				}
+				else{
+					oldKey = textKey.getText();
+				}
+				final String key = oldKey;
 				if(key.length() > 0){
 					Thread voiceThread = new Thread(new Runnable() {
 	                    @SuppressWarnings("static-access")
@@ -145,7 +152,7 @@ public class Panel extends JPanel{
 		textValue.setContentType("text/html");
 		textKey.setBackground(Color.WHITE);
 		textSearch.setText("Search");
-		textValue.setText("Definition");
+		textValue.setText("<html><i>Definition</i><html>");
 		textSearch.setFont(new Font("Cambria", Font.PLAIN, 20));
 		textValue.setFont(new Font("Cambria", Font.PLAIN, 20));
 		textKey.setFont(new Font("Cambria", Font.PLAIN, 20));
