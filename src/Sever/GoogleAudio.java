@@ -14,12 +14,14 @@ import javazoom.jl.decoder.JavaLayerException;
 import javazoom.jl.player.Player;
 
 public class GoogleAudio {
+	//https://www.youtube.com/watch?v=DOtkNxmg9QY
+	//https://github.com/lkuza2/java-speech-api/blob/master/src/main/java/com/darkprograms/speech/translator/GoogleTranslate.java
+	
 	public static void speak(String text) throws IOException{
-		speak("vi", text);
+		speak("es", text);
 	}
 	public static void speak(String language, String text) throws IOException {
         String url = generateSpeakURL(language, text);
-
         URL obj = new URL(url);
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
         con.setRequestMethod("GET");
@@ -45,22 +47,23 @@ public class GoogleAudio {
 	private static int[] TKK() {
         return new int[]{0x6337E, 0x217A58DC + 0x5AF91132};
     }
-	private static int shr32(int x, int bits) {
-        if (x < 0) {
-            long x_l = 0xffffffffl + x + 1;
-            return (int) (x_l >> bits);
-        }
-        return x >> bits;
-    }
-	private static int RL(int a, String b) {
-        for (int c = 0; c < b.length() - 2; c += 3) {
-            int d = b.charAt(c + 2);
-            d = d >= 65 ? d - 87 : d - 48;
-            d = b.charAt(c + 1) == '+' ? shr32(a, d) : (a << d);
-            a = b.charAt(c) == '+' ? (a + (d & 0xFFFFFFFF)) : a ^ d;
-        }
-        return a;
-    }
+	private static long shr64(long x, int bits) {
+	    if (x < 0) {
+	        long x_l = 0xffffffffffffffffL + x + 1;
+	        return x_l >> bits;
+	    }
+	    return x >> bits;
+	}
+
+	private static long RL(long a, String b) {
+	    for (int c = 0; c < b.length() - 2; c += 3) {
+	        int d = b.charAt(c + 2);
+	        d = (d >= 'A') ? d - 87 : d - '0';
+	        d = (int)(b.charAt(c + 1) == '+' ? shr64(a, d) : (a << d));
+	        a = b.charAt(c) == '+' ? (a + (d & 0xffffffffffffffffL)) : a ^ d;
+	    }
+	    return a;
+	}
 	private static String generateToken(String text) {
         int tkk[] = TKK();
         int b = tkk[0];
@@ -88,7 +91,7 @@ public class GoogleAudio {
             }
         }
 
-        int a_i = b;
+        long a_i = b;
         for (e = 0; e < d.size(); e++) {
             a_i += d.get(e);
             a_i = RL(a_i, "+-a^+6");

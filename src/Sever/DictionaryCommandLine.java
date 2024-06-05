@@ -2,44 +2,42 @@ package Sever;
 
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.SortedMap;
 
 public class DictionaryCommandLine {
-	private DictionaryManagement open;
+	private DictionaryManagement dictionaryManagement;
 	public DictionaryManagement getOpen() {
-		return open;
+		return dictionaryManagement;
 	}
 	public void setOpen(DictionaryManagement open) {
-		this.open = open;
+		this.dictionaryManagement = open;
 	}
 	public void display(){
-		open.showAllWords();
+		dictionaryManagement.showAllWords();
 	}
-	public ArrayList<String> dictionarySearcher(String key){
-		ArrayList<String> list = new ArrayList<String>();
-        String word = key;
-        int endWord = word.length() - 1;
-        char[] oldWord = word.toCharArray();
-        if(endWord >= 0){
-        	int i = Integer.valueOf(oldWord[endWord]) + 1;
-        	oldWord[endWord] = (char)i;
-        }
-        String eWord = new String(oldWord);
-        SortedMap<String, String> subMap = open.getArrWords().getTree().subMap(word, eWord);
-        if (subMap.size() != 0) {
-            for (Map.Entry<String, String> entry : subMap.entrySet()) {
-                String keyWord = entry.getKey();
-                list.add(keyWord);
-            }
-        }
-		return list;
+	public ArrayList<String> dictionarySearcher(String key) {
+	    String word = key;
+	    int endWord = word.length() - 1;
+	    if (endWord >= 0) {
+	        word = word.substring(0, endWord) + (char) (word.charAt(endWord) + 1);
+	    }
+	    ArrayList<String> list = new ArrayList<>();
+	    for (Map.Entry<String, String> entry : dictionaryManagement.getArrWords().getTree().entrySet()) {
+	        String keyWord = entry.getKey();
+	        if (keyWord.compareTo(key) >= 0 && keyWord.compareTo(word) < 0) {
+	            list.add(keyWord);
+	        }
+	    }
+	    return list;
 	}
 	public String dictionarySearcher(String key, boolean flag){
-		return open.getArrWords().getTree().get(key);
+		if(key.isEmpty() || key == null){
+			return "";
+		}
+		return dictionaryManagement.getArrWords().getTree().get(key);
 	}
 	public DictionaryCommandLine(){
-		open = new DictionaryManagement();
-		open.insertFromFile();
+		dictionaryManagement = new DictionaryManagement();
+		dictionaryManagement.insertFromFile();
 	}
 
 }

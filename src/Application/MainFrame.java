@@ -24,13 +24,13 @@ public class MainFrame extends JFrame implements ActionListener{
 	private JButton addItem, deleteItem, editItem;
 	private JMenu fileMenu;
 	private ImageIcon image;
-	private MainPanel solve;
-	private MainPanelSmall menuPanel;
+	private Panel solve;
+	private PanelSmaill menuPanel;
 	private JButton buttonMenu ;
 	public void setButtonMenu(JButton buttonMenu) {
 		this.buttonMenu = buttonMenu;
 	}
-	public MainPanel getSolve() {
+	public Panel getSolve() {
 		return solve;
 	}
 	public MainFrame(){
@@ -67,9 +67,9 @@ public class MainFrame extends JFrame implements ActionListener{
 		}).start();
 	}
 	public void newImplement(){
-		solve = new MainPanel();
+		solve = new Panel();
 		buttonMenu = new JButton();
-		menuPanel = new MainPanelSmall(buttonMenu, solve.getTextKey());
+		menuPanel = new PanelSmaill(buttonMenu, solve.getTextKey());
 		editItem = menuPanel.getEdit();
 		menuBar = new JMenuBar();
 		deleteItem = menuPanel.getDelete();
@@ -118,13 +118,13 @@ public class MainFrame extends JFrame implements ActionListener{
 			solve.getArr().getOpen().dictionaryExportToFile();
 		}
 		else if(e.getSource() == addItem){
-			new MainFrameAdd(solve.getArr().getOpen().getArrWords().getTree()).setVisible(true);
+			new Add(solve.getArr().getOpen().getArrWords().getTree()).setVisible(true);
 		}
 		else if(e.getSource() == deleteItem){
-			new MainFrameDelete(solve.getArr().getOpen().getArrWords().getTree()).setVisible(true);
+			new Delete(solve.getArr().getOpen().getArrWords().getTree()).setVisible(true);
 		}
 		else if(e.getSource() == editItem){
-			new MainFrameEdit(solve.getArr().getOpen().getArrWords().getTree()).setVisible(true);
+			new Edit(solve.getArr().getOpen().getArrWords().getTree()).setVisible(true);
 		}
 	}
 	

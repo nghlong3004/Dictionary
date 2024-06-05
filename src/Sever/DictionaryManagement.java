@@ -5,18 +5,17 @@ import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Map;
 
 public class DictionaryManagement {
-	private Dictionary arrWords;
+	private Dictionary dictionary;
 	public Dictionary getArrWords() {
-		return arrWords;
+		return dictionary;
 	}
 	public void dictionaryExportToFile(){
 		try {
-			BufferedWriter writer = new BufferedWriter(new FileWriter(arrWords.getADDRESSFILE()));
-			for(Map.Entry<String, String>entry: arrWords.getTree().entrySet()){
+			BufferedWriter writer = new BufferedWriter(new FileWriter(new Dictionary().getADDRESSFILE()));
+			for(Map.Entry<String, String>entry: new Dictionary().getTree().entrySet()){
 				writer.write(entry.getKey() + '\t' + entry.getValue() + '\n');
 			}
 			writer.close();
@@ -25,38 +24,24 @@ public class DictionaryManagement {
 			e.printStackTrace();
 		}
 	}
-	public void insertFromFile(){
-		try{
-			BufferedReader read = new BufferedReader(new FileReader(arrWords.getADDRESSFILE()));
-			int data = read.read();
-			ArrayList<String> arrString = new ArrayList<String>();
-			String word = "";
-			while(data != -1){
-				if(((char)data == '\n'|| (char)data == '\t') && !word.isEmpty()){
-					arrString.add(word.trim());
-					word = "";
-				}
-				else{
-					word += (char)data;
-				}
-				data = read.read();
-			}
-			if(word.isEmpty() == false){
-				arrString.add(word);
-			}
-			int n = arrString.size();
-			for(int i = 0; i < n; i += 2){
-				arrWords.getTree().put(arrString.get(i), arrString.get(i + 1));
-			}
-			read.close();
-			
-		}catch(IOException e){
-			e.printStackTrace();
-		}
+	public void insertFromFile() {
+	    try (BufferedReader reader = new BufferedReader(new FileReader(dictionary.getADDRESSFILE()))) {
+	        String line;
+	        while ((line = reader.readLine()) != null) {
+	            int splitIndex = line.indexOf('<');
+	            if (splitIndex != -1) {
+	                String key = line.substring(0, splitIndex).trim();
+	                String value = line.substring(splitIndex).trim();
+	                dictionary.getTree().put(key, value);
+	            }
+	        }
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
 	}
 	public void showAllWords(){
 		int i = 0;
-		for(Map.Entry<String, String>entry: arrWords.getTree().entrySet()){
+		for(Map.Entry<String, String>entry: dictionary.getTree().entrySet()){
 			if(i == 0){
 				System.out.println("No" + '\t' + "| EngLish " + '\t' + "| Vietnamese");
 			}
@@ -67,7 +52,7 @@ public class DictionaryManagement {
 		
 	}
 	public DictionaryManagement(){
-		arrWords = new Dictionary();
+		dictionary = new Dictionary();
 	}
 	
 }
