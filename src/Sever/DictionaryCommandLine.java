@@ -30,7 +30,7 @@ public class DictionaryCommandLine {
 	    return list;
 	}
 	public String dictionarySearcher(String key, boolean flag){
-		if(key.isEmpty() || key == null){
+		if(key.isEmpty()){
 			return "";
 		}
 		return dictionaryManagement.getArrWords().getTree().get(key);
