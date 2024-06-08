@@ -8,7 +8,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JProgressBar;
 
-import Sever.Dictionary;
+import Sever.Constants;
 
 public class Intro extends JFrame{
 
@@ -25,7 +25,7 @@ public class Intro extends JFrame{
 		setLocationRelativeTo(null);
 		setResizable(false);
 		setIconImage(getIconImage());
-		image = new ImageIcon(new Dictionary().getADDRESSIMAGE() + "intro.png");
+		image = new ImageIcon(Constants.IMAGE_FILE_PATH + "intro.png");
 		setIconImage(image.getImage());
 		bar = new JProgressBar(0, 100);
 		bar.setStringPainted(true);

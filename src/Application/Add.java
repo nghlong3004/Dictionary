@@ -8,8 +8,9 @@ import java.io.IOException;
 
 import javax.swing.*;
 
-import Sever.Dictionary;
+import Sever.Constants;
 import Sever.DictionaryCommandLine;
+import Sever.DictionaryHelper;
 import Sever.GoogleTranslate;
 
 public class Add extends JFrame implements ActionListener{
@@ -22,13 +23,13 @@ public class Add extends JFrame implements ActionListener{
 	private JLabel labelKey, labelValue;
 	private JButton buttonKey, buttonValue, se;
 	private ImageIcon image;
-	private Panel solve;
+	private DictionaryPanel dictionaryPanel;
 	private boolean flag = true;
 	
-	public Add(Panel solve) {
+	public Add(DictionaryPanel dictionaryPanel) {
 		// TODO Auto-generated constructor stub
 		super("Add Vocabulary");
-		this.solve = solve;
+		this.dictionaryPanel = dictionaryPanel;
 		pack();
 		handle();
 		panel.setBackground(Color.white);
@@ -43,7 +44,7 @@ public class Add extends JFrame implements ActionListener{
 	public void handle(){
 		se = new Button();
 		panel = new JPanel();
-		image = new ImageIcon(new Dictionary().getADDRESSIMAGE() + "add.png");
+		image = new ImageIcon(Constants.IMAGE_FILE_PATH + "add.png");
 		buttonKey = new JButton("OK!!");
 		buttonValue = new JButton("OK!!");
 		buttonKey.setBounds((50 + 250 ) >> 1, 51, 50, 25);
@@ -89,15 +90,13 @@ public class Add extends JFrame implements ActionListener{
 	public void setText(String value){
 		textValue.setText(value);
 	}
-	@SuppressWarnings("static-access")
 	public void buttonPef(ActionEvent e){
-		String key = textKey.getText();
+		String key = textKey.getText().trim();
 		key = key.substring(0, 1).toUpperCase() + key.substring(1).toLowerCase();
-		key.trim();
 		String value = null;
 		if(key.length() > 0){
 			try {
-				value = (new GoogleTranslate().translate(key, "En", "vi"));
+				value = (GoogleTranslate.translate(key, "En", "vi"));
 			} catch (IOException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -115,8 +114,9 @@ public class Add extends JFrame implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		String key = textKey.getText();
-		String value = new DictionaryCommandLine().dictionarySearcher(key, flag);
+		String key = textKey.getText().trim();
+		key = key.substring(0, 1).toUpperCase() + key.substring(1).toLowerCase();
+		String value = DictionaryCommandLine.dictionarySearcher(key, flag);
 		if(flag || value != null){
 			if(value == null){
 				flag = false;
@@ -130,8 +130,8 @@ public class Add extends JFrame implements ActionListener{
 		}
 		else{
 			value = textValue.getText();
-			solve.getArr().getOpen().getArrWords().getTree().put(key, new Dictionary().parseHTML(key, value));
-			solve.getArr().getOpen().dictionaryExportToFile();
+			dictionaryPanel.getArr().getOpen().getArrWords().getTree().put(key, DictionaryHelper.parseHTML(key, value));
+			dictionaryPanel.getArr().getOpen().dictionaryExportToFile();
 			JOptionPane.showMessageDialog(this, "added vocabulary successfully", "Message", JOptionPane.PLAIN_MESSAGE, null);
 			this.dispose();
 		}

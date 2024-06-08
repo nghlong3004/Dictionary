@@ -22,7 +22,8 @@ public class GoogleAudio {
 	}
 	public static void speak(String language, String text) throws IOException {
         String url = generateSpeakURL(language, text);
-        URL obj = new URL(url);
+        @SuppressWarnings("deprecation")
+		URL obj = new URL(url);
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
         con.setRequestMethod("GET");
         con.setRequestProperty("User-Agent", "Mozilla/5.0");
@@ -37,7 +38,7 @@ public class GoogleAudio {
         }
     }
 	private static String generateSpeakURL(String language, String text) throws UnsupportedEncodingException {
-        String url = (new Dictionary().getADDRESSAPIAUDIO()) + "?ie=UTF-8" +
+        String url = Constants.GOOGLE_AUDIO_API_URL + "?ie=UTF-8" +
                 "&q=" + URLEncoder.encode(text, "UTF-8") +
                 "&tl=" + language +
                 "&tk=" + generateToken(text) +

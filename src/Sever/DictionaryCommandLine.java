@@ -4,17 +4,17 @@ import java.util.ArrayList;
 import java.util.Map;
 
 public class DictionaryCommandLine {
-	private DictionaryManagement dictionaryManagement;
+	private static DictionaryManagement dictionaryManagement;
 	public DictionaryManagement getOpen() {
 		return dictionaryManagement;
 	}
 	public void setOpen(DictionaryManagement open) {
-		this.dictionaryManagement = open;
+		DictionaryCommandLine.dictionaryManagement = open;
 	}
 	public void display(){
 		dictionaryManagement.showAllWords();
 	}
-	public ArrayList<String> dictionarySearcher(String key) {
+	public static ArrayList<String> dictionarySearcher(String key) {
 	    String word = key;
 	    int endWord = word.length() - 1;
 	    if (endWord >= 0) {
@@ -29,7 +29,7 @@ public class DictionaryCommandLine {
 	    }
 	    return list;
 	}
-	public String dictionarySearcher(String key, boolean flag){
+	public static String dictionarySearcher(String key, boolean flag){
 		if(key.isEmpty()){
 			return "";
 		}

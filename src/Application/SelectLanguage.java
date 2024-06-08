@@ -2,8 +2,8 @@ package Application;
 
 import javax.swing.JComboBox;
 
-import Sever.Dictionary;
-import Sever.Languages;
+import Sever.Constants;
+import Sever.DictionaryLanguage;
 
 public class SelectLanguage extends JComboBox<String>{
 
@@ -12,20 +12,20 @@ public class SelectLanguage extends JComboBox<String>{
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	public Languages languageMap;
+	public DictionaryLanguage languageMap;
 	public SelectLanguage() {
 		// TODO Auto-generated constructor stub
-		languageMap = new Languages();
+		languageMap = new DictionaryLanguage();
     	addItem("EngLish");
-    	for (String language : languageMap.languageMap.keySet()) {
+    	for (String language : languageMap.keySet()) {
             addItem(language);
         }
     	setLayout(null);
-    	setBounds((int)(new Dictionary().getW() * 0.8) ,(int)(new Dictionary().getH() * 1.5) , 80, 20);	
+    	setBounds((int)(Constants.WEIGHT * 0.8) ,(int)(Constants.HEIGHT * 1.5) , 80, 20);	
 	}
 	public String getSelectedLanguageCode() {
         String selectedLanguage = (String) getSelectedItem();
-	    return languageMap.languageMap.get(selectedLanguage);
+	    return languageMap.getLanguage(selectedLanguage);
 	}
 	
 }

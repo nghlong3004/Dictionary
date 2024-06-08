@@ -17,7 +17,7 @@ import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 import javax.swing.Timer;
 
-import Sever.Dictionary;
+import Sever.Constants;
 
 public class MainFrame extends JFrame implements ActionListener{
 	/**
@@ -29,23 +29,23 @@ public class MainFrame extends JFrame implements ActionListener{
 	private JButton addItem, deleteItem, editItem;
 	private JMenu fileMenu;
 	private ImageIcon image;
-	private Panel solve;
-	private Menu menuPanel;
+	private DictionaryPanel dictionaryPanel;
+	private MenuPanel menuPanel;
 	private JButton buttonMenu, exit;
 	private JLayeredPane layeredPane;
 	public void setButtonMenu(JButton buttonMenu) {
 		this.buttonMenu = buttonMenu;
 	}
-	public Panel getSolve() {
-		return solve;
+	public DictionaryPanel getSolve() {
+		return dictionaryPanel;
 	}
 	public MainFrame(){
 		super("Dictionary");
 		pack();
 		newImplement();
 		setJMenuBar(menuBar);
-		setBounds(0, 0, solve.getArr().getOpen().getArrWords().getH() * 30 - 30 >> 1, 962);
-		image = new ImageIcon(solve.getArr().getOpen().getArrWords().getADDRESSIMAGE() + "avatar.jpg");
+		setBounds(0, 0, Constants.HEIGHT * 30 - 30 >> 1, 962);
+		image = new ImageIcon(Constants.IMAGE_FILE_PATH + "avatar.jpg");
 		setIconImage(image.getImage());
 	    add(layeredPane);
 		setResizable(false);
@@ -54,7 +54,7 @@ public class MainFrame extends JFrame implements ActionListener{
 	}
 	public void menuEvent(ActionEvent e) {
 	    this.buttonMenu.setVisible(false);
-	    solve.resetClick();
+	    dictionaryPanel.resetClick();
 	    Timer animationTimer = new Timer(0, new ActionListener() {
 	        private int startWidth = 0;
 	        private int targetWidth = 400;
@@ -85,10 +85,10 @@ public class MainFrame extends JFrame implements ActionListener{
 	    return 1 - Math.pow(1 - t, 3);
 	}
 	public void newImplement(){
-		solve = new Panel();
+		dictionaryPanel = new DictionaryPanel();
 		exit = new JButton();
 		buttonMenu = new JButton();
-		menuPanel = new Menu();
+		menuPanel = new MenuPanel();
 		editItem = menuPanel.getEdit();
 		menuBar = new JMenuBar();
 		deleteItem = menuPanel.getDelete();
@@ -98,7 +98,7 @@ public class MainFrame extends JFrame implements ActionListener{
 		exitItem = new JMenuItem("Exit");
 		exit.setFocusable(false);
 		buttonMenu.setFocusable(false);
-		image = new ImageIcon(new Dictionary().getADDRESSIMAGE() + "arrow-left.png");
+		image = new ImageIcon(Constants.IMAGE_FILE_PATH + "arrow-left.png");
 		exit.setIcon(new ImageIcon(image.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH)));
 		exit.setBounds(380, 0, 20, 20);
 		exit.addActionListener(new ActionListener() {
@@ -111,10 +111,10 @@ public class MainFrame extends JFrame implements ActionListener{
 			}
 		});
 		menuPanel.textLabel.add(exit);
-		image = new ImageIcon(solve.getArr().getOpen().getArrWords().getADDRESSIMAGE() + "Menus.png");
+		image = new ImageIcon(Constants.IMAGE_FILE_PATH + "Menus.png");
 		layeredPane = new JLayeredPane();
 		layeredPane.add(menuPanel, JLayeredPane.PALETTE_LAYER);
-	    layeredPane.add(solve, JLayeredPane.DEFAULT_LAYER);
+	    layeredPane.add(dictionaryPanel, JLayeredPane.DEFAULT_LAYER);
 	    layeredPane.moveToFront(menuPanel); 
 		initMenuBar();
 	}
@@ -140,12 +140,12 @@ public class MainFrame extends JFrame implements ActionListener{
 		fileMenu.setMnemonic(KeyEvent.VK_F);
 		exitItem.setAccelerator(KeyStroke.getKeyStroke("control X"));
 		saveItem.setAccelerator(KeyStroke.getKeyStroke("control S"));
-		JLabel temp = solve.getLabelLeft();
+		JLabel temp = dictionaryPanel.getLabelLeft();
 		menuPanel.setAdd(addItem);
 		menuPanel.setDelete(deleteItem);
 		menuPanel.setEdit(editItem);
 		temp.add(buttonMenu);
-		solve.setLabelLeft(temp);
+		dictionaryPanel.setLabelLeft(temp);
 	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -154,16 +154,16 @@ public class MainFrame extends JFrame implements ActionListener{
 			dispose();
 		}
 		else if(e.getSource() == saveItem){
-			solve.getArr().getOpen().dictionaryExportToFile();
+			dictionaryPanel.getArr().getOpen().dictionaryExportToFile();
 		}
 		else if(e.getSource() == addItem){
-			new Add(solve).setVisible(true);
+			new Add(dictionaryPanel).setVisible(true);
 		}
 		else if(e.getSource() == deleteItem){
-			new Delete(solve).setVisible(true);
+			new Delete(dictionaryPanel).setVisible(true);
 		}
 		else if(e.getSource() == editItem){
-			new Edit(solve).setVisible(true);
+			new Edit(dictionaryPanel).setVisible(true);
 		}
 	}
 	

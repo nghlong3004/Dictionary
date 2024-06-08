@@ -13,7 +13,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import Sever.Dictionary;
+import Sever.Constants;
+import Sever.DictionaryCommandLine;
 public class Delete extends JFrame implements ActionListener{
 
 	/**
@@ -26,11 +27,11 @@ public class Delete extends JFrame implements ActionListener{
 	private JButton buttonKey;
 	private ImageIcon image;
 	private boolean flag = true;
-	private Panel solve;
+	private DictionaryPanel dictonaryPanel;
 	
-	public Delete(Panel solve) {
+	public Delete(DictionaryPanel dictionaryPanel) {
 		super("Delete");
-		this.solve = solve;
+		this.dictonaryPanel = dictionaryPanel;
 		pack();
 		handle();
 		setBounds(100, 100, 315, 200);
@@ -44,7 +45,7 @@ public class Delete extends JFrame implements ActionListener{
 	public void handle(){
 		panel = new JPanel();
 		buttonKey = new JButton("OK!!");
-		image = new ImageIcon(new Dictionary().getADDRESSIMAGE() + "remove.png");
+		image = new ImageIcon(Constants.IMAGE_FILE_PATH + "remove.png");
 		buttonKey.setBounds(250 >> 1, 110, 50, 30);
 		buttonKey.setFont(new Font("Cambria", Font.ITALIC, 8));
 		buttonKey.setBackground(Color.white);
@@ -65,13 +66,13 @@ public class Delete extends JFrame implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		String key = textKey.getText();
+		String key = textKey.getText().trim();
 		key = key.substring(0, 1).toUpperCase() + key.substring(1).toLowerCase();
-		String value = solve.getArr().dictionarySearcher(key, flag);
+		String value = DictionaryCommandLine.dictionarySearcher(key, flag);
 		if(value != null){
-			solve.getArr().getOpen().getArrWords().getTree().remove(key);
+			dictonaryPanel.getArr().getOpen().getArrWords().getTree().remove(key);
 			JOptionPane.showMessageDialog(this, "Delete vocabulary successfully", "Message", JOptionPane.PLAIN_MESSAGE, null);
-			solve.getArr().getOpen().dictionaryExportToFile();
+			dictonaryPanel.getArr().getOpen().dictionaryExportToFile();
 			this.dispose();
 		}
 		else{

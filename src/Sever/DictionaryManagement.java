@@ -29,7 +29,7 @@ public class DictionaryManagement {
 	}
 	public void insertFromFile() {
 		long totalLines;
-        try (Stream<String> lines = Files.lines(Paths.get(dictionary.getADDRESSFILE()))) {
+        try (Stream<String> lines = Files.lines(Paths.get(Constants.INPUT_FILE_PATH))) {
             totalLines = lines.count();
         } catch (IOException e) {
             e.printStackTrace();
@@ -37,7 +37,7 @@ public class DictionaryManagement {
         }
         Intro intro = new Intro();
         AtomicInteger currentLine = new AtomicInteger(0);
-	    try (Stream<String> lines = Files.lines(Paths.get(dictionary.getADDRESSFILE()))) {
+	    try (Stream<String> lines = Files.lines(Paths.get(Constants.INPUT_FILE_PATH))) {
 	        lines.forEach(line -> {
 	            int splitIndex = line.indexOf('<');
 	            if (splitIndex != -1) {

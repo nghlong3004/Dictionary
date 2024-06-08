@@ -7,15 +7,14 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 
-import Sever.Dictionary;
-
 public class GoogleTranslate {
 
 	public static String translate(String text, String langFrom, String langTo) throws IOException{
-		String urlStr = (new Dictionary().getADDRESSAPI())
+		String urlStr = (Constants.GOOGLE_TRANSLATE_API_URL)
 				+ "?q=" + URLEncoder.encode(text, "UTF-8")
 				+ "&source=" + langFrom
 				+ "&target=" + langTo;
+		@SuppressWarnings("deprecation")
 		URL url = new URL(urlStr);
         StringBuilder response = new StringBuilder();
         HttpURLConnection con = (HttpURLConnection) url.openConnection();

@@ -7,8 +7,9 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
-import Sever.Dictionary;
+import Sever.Constants;
 import Sever.DictionaryCommandLine;
+import Sever.DictionaryHelper;
 
 public class Edit extends JFrame implements ActionListener{
 	/**
@@ -21,12 +22,12 @@ public class Edit extends JFrame implements ActionListener{
 	private JButton buttonValue;
 	private boolean flag = true;
 	private ImageIcon image;
-	private Panel solve;
+	private DictionaryPanel dictionaryPanel;
 	
-	public Edit(Panel solve) {
+	public Edit(DictionaryPanel dictionaryPanel) {
 		// TODO Auto-generated constructor stub
 		super("Edit Vocabulary");
-		this.solve = solve;
+		this.dictionaryPanel = dictionaryPanel;
 		pack();
 		handle();
 		setBounds(100, 100, 315, 200);
@@ -40,7 +41,7 @@ public class Edit extends JFrame implements ActionListener{
 	}
 	public void handle(){
 		panel = new JPanel();
-		image = new ImageIcon(new Dictionary().getADDRESSIMAGE() + "Edit.png");
+		image = new ImageIcon(Constants.IMAGE_FILE_PATH + "Edit.png");
 		buttonValue = new JButton("OK!!");
 		buttonValue.setBounds(( 250 )>> 1, 102, 50, 30);
 		buttonValue.setBackground(Color.white);
@@ -70,16 +71,16 @@ public class Edit extends JFrame implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		String key = textKey.getText();
+		String key = textKey.getText().trim();
 		key = key.substring(0, 1).toUpperCase() + key.substring(1).toLowerCase();
-		String value = new DictionaryCommandLine().dictionarySearcher(key, flag);
+		String value = DictionaryCommandLine.dictionarySearcher(key, flag);
 		if(value == null){
 			JOptionPane.showMessageDialog(this, "Not Found", "Message", JOptionPane.PLAIN_MESSAGE, null);
 		}
 		else{
 			value = textValue.getText();
-			solve.getArr().getOpen().getArrWords().getTree().put(key, new Dictionary().parseHTML(key, value));
-			solve.getArr().getOpen().dictionaryExportToFile();
+			dictionaryPanel.getArr().getOpen().getArrWords().getTree().put(key, DictionaryHelper.parseHTML(key, value));
+			dictionaryPanel.getArr().getOpen().dictionaryExportToFile();
 			JOptionPane.showMessageDialog(this, "Successful vocabulary revision", "Message", JOptionPane.PLAIN_MESSAGE, null);
 			this.dispose();
 		}
