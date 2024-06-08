@@ -1,43 +1,58 @@
 package Sever;
 
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Stream;
+
+import Application.Intro;
 
 public class DictionaryManagement {
 	private Dictionary dictionary;
 	public Dictionary getArrWords() {
 		return dictionary;
 	}
-	public void dictionaryExportToFile(){
-		try {
-			BufferedWriter writer = new BufferedWriter(new FileWriter("newData.txt"));
-			for(Map.Entry<String, String>entry: dictionary.getTree().entrySet()){
-				writer.write(entry.getKey() + entry.getValue() + '\n');
-			}
-			writer.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	public void insertFromFile() {
-	    try (BufferedReader reader = new BufferedReader(new FileReader(dictionary.getADDRESSFILE()))) {
-	        String line;
-	        while ((line = reader.readLine()) != null) {
-	            int splitIndex = line.indexOf('<');
-	            if (splitIndex != -1) {
-	                String key = line.substring(0, splitIndex).trim();
-	                String value = line.substring(splitIndex).trim();
-	                dictionary.getTree().put(key, value);
-	            }
+	public void dictionaryExportToFile() {
+	    try (BufferedWriter writer = new BufferedWriter(new FileWriter("newData.txt"), 1 << 16)) {
+	        for (Map.Entry<String, String> entry : dictionary.getTree().entrySet()) {
+	            StringBuilder sb = new StringBuilder();
+	            sb.append(entry.getKey()).append(entry.getValue()).append('\n');
+	            writer.write(sb.toString());
 	        }
 	    } catch (IOException e) {
 	        e.printStackTrace();
 	    }
+	}
+	public void insertFromFile() {
+		long totalLines;
+        try (Stream<String> lines = Files.lines(Paths.get(dictionary.getADDRESSFILE()))) {
+            totalLines = lines.count();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return;
+        }
+        Intro intro = new Intro();
+        AtomicInteger currentLine = new AtomicInteger(0);
+	    try (Stream<String> lines = Files.lines(Paths.get(dictionary.getADDRESSFILE()))) {
+	        lines.forEach(line -> {
+	            int splitIndex = line.indexOf('<');
+	            if (splitIndex != -1) {
+	                String key = line.substring(0, splitIndex).trim();
+	                key = key.substring(0, 1).toUpperCase() + key.substring(1).toLowerCase();
+	                String value = line.substring(splitIndex).trim();
+	                dictionary.getTree().put(key, value);
+	            }
+                int progress = (int) (((double) currentLine.incrementAndGet() / totalLines) * 100);
+                intro.value(progress);
+	        });
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
+	    intro.done();
 	}
 	public void showAllWords(){
 		int i = 0;

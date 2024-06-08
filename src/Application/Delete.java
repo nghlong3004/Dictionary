@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -12,9 +13,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import Sever.DictionaryCommandLine;
-import Sever.DictionaryManagement;
-
+import Sever.Dictionary;
 public class Delete extends JFrame implements ActionListener{
 
 	/**
@@ -25,6 +24,7 @@ public class Delete extends JFrame implements ActionListener{
 	private JPanel panel;
 	private JLabel labelKey;
 	private JButton buttonKey;
+	private ImageIcon image;
 	private boolean flag = true;
 	private Panel solve;
 	
@@ -34,6 +34,7 @@ public class Delete extends JFrame implements ActionListener{
 		pack();
 		handle();
 		setBounds(100, 100, 315, 200);
+		setIconImage(image.getImage());
 		panel.setBackground(Color.white);
 		getContentPane().add(panel);
 		setResizable(false);
@@ -43,6 +44,7 @@ public class Delete extends JFrame implements ActionListener{
 	public void handle(){
 		panel = new JPanel();
 		buttonKey = new JButton("OK!!");
+		image = new ImageIcon(new Dictionary().getADDRESSIMAGE() + "remove.png");
 		buttonKey.setBounds(250 >> 1, 110, 50, 30);
 		buttonKey.setFont(new Font("Cambria", Font.ITALIC, 8));
 		buttonKey.setBackground(Color.white);
@@ -64,6 +66,7 @@ public class Delete extends JFrame implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		String key = textKey.getText();
+		key = key.substring(0, 1).toUpperCase() + key.substring(1).toLowerCase();
 		String value = solve.getArr().dictionarySearcher(key, flag);
 		if(value != null){
 			solve.getArr().getOpen().getArrWords().getTree().remove(key);

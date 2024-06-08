@@ -43,7 +43,7 @@ public class Add extends JFrame implements ActionListener{
 	public void handle(){
 		se = new Button();
 		panel = new JPanel();
-		image = new ImageIcon(new Dictionary().getADDRESSIMAGE() + "Add.png");
+		image = new ImageIcon(new Dictionary().getADDRESSIMAGE() + "add.png");
 		buttonKey = new JButton("OK!!");
 		buttonValue = new JButton("OK!!");
 		buttonKey.setBounds((50 + 250 ) >> 1, 51, 50, 25);
@@ -91,7 +91,8 @@ public class Add extends JFrame implements ActionListener{
 	}
 	@SuppressWarnings("static-access")
 	public void buttonPef(ActionEvent e){
-		final String key = textKey.getText();
+		String key = textKey.getText();
+		key = key.substring(0, 1).toUpperCase() + key.substring(1).toLowerCase();
 		key.trim();
 		String value = null;
 		if(key.length() > 0){

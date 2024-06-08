@@ -71,6 +71,7 @@ public class Edit extends JFrame implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		String key = textKey.getText();
+		key = key.substring(0, 1).toUpperCase() + key.substring(1).toLowerCase();
 		String value = new DictionaryCommandLine().dictionarySearcher(key, flag);
 		if(value == null){
 			JOptionPane.showMessageDialog(this, "Not Found", "Message", JOptionPane.PLAIN_MESSAGE, null);

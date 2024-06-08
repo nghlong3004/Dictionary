@@ -4,6 +4,7 @@ package Application;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,6 +18,7 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
@@ -43,7 +45,8 @@ public class Panel extends JPanel{
 		return arr;
 	}
 	private JTextField textKey;
-	private JEditorPane textValue;
+	private JEditorPane textExplain;
+	private JTextArea textArea, textValue;
 	public JTextField getTextKey() {
 		return textKey;
 	}
@@ -74,27 +77,33 @@ public class Panel extends JPanel{
 		voiceButton = new JButton();
 		languages = new SelectLanguage();
 		textKey = new JTextField();
-		textValue = new JEditorPane();
+		textExplain = new JEditorPane();
+		textValue = new JTextArea();
+		textArea = new JTextArea();
 		textSearch = new JLabel();
 		labelLeft = new JLabel();
 		labelRight = new JLabel();
 		ArrayList<String> list = new ArrayList<String>();
 		listArray = new JList<String>(list.toArray(new String[list.size()]));
-		scrollpane = new JScrollPane(textValue);
+		scrollpane = new JScrollPane(textExplain);
 		scroll = new JScrollPane(listArray);
 	}
 	public void resetClick(){
+		textValue.setText("");
 		textKey.setText("");
-		textValue.setText("<html><i>Definition</i><html>");
+		textExplain.setText("<html><i>Definition</i><html>");
 		textSearch.setText("Search");
+		voiceButton.setVisible(false);
 		textSearch.setVisible(true);
 		ArrayList<String> list = new ArrayList<String>();
 		listArray.setListData(list.toArray(new String[list.size()]));
 	}
 	public void addImplement(){
 		labelLeft.add(languages);
+		textArea.add(voiceButton);
+		textArea.add(textValue);
+		this.add(textArea);
 		this.add(labelLeft);
-		this.add(voiceButton);
 		this.add(labelRight);
 		this.add(scrollpane);
 		this.add(textKey);
@@ -102,33 +111,31 @@ public class Panel extends JPanel{
 	}
 	public void setBound(){
 		this.setBounds(0, 0, new Dictionary().getH() * 30 - 30 >> 1, 962);
-		scrollpane.setBounds(new Dictionary().getW(), new Dictionary().getH() * 2, new Dictionary().getW() - 30, new Dictionary().getH() * 13);
-		scroll.setBounds(0,  new Dictionary().getH() * 2 + new Dictionary().getH() * 3 / 2, new Dictionary().getW(), new Dictionary().getH() * 11 + new Dictionary().getH() * 3 / 6);
+		textArea.setBounds(new Dictionary().getW(), new Dictionary().getH() * 2, new Dictionary().getW() - 30, new Dictionary().getH() * 3 / 2);
+		scrollpane.setBounds(new Dictionary().getW() + 4, new Dictionary().getH() * 2 + new Dictionary().getH() * 3 / 2, new Dictionary().getW() - 39, new Dictionary().getH() * 11 + new Dictionary().getH() * 3 / 6);
+		scroll.setBounds(4,  new Dictionary().getH() * 2 + new Dictionary().getH() * 3 / 2, new Dictionary().getW() - 4, new Dictionary().getH() * 11 + new Dictionary().getH() * 3 / 6);
 		textSearch.setBounds(2, 1, (int) (new Dictionary().getW() * 0.8), (int) (new Dictionary().getH() * 3 / 2 * 0.8));
 		textKey.setBounds(45, new Dictionary().getH() * 2 + 10, (int) (new Dictionary().getW() * 0.8), (int) (new Dictionary().getH() * 3 / 2 * 0.8) );
 		labelLeft.setBounds(0, 0, new Dictionary().getW(), new Dictionary().getH() * 2);
 		labelRight.setBounds(new Dictionary().getW(), 0, new Dictionary().getW(), new Dictionary().getH() * 2);
-		voiceButton.setBounds((int) (new Dictionary().getW() * 0.9) + 1, new Dictionary().getH() * 2 + 25, 40, 40);
+		int wArea = new Dictionary().getW() - 30, hArea = new Dictionary().getH() * 3 / 2;
+		textValue.setBounds(0, 20, wArea - 39, hArea);
+		voiceButton.setBounds(wArea - 40, hArea - 40 >> 1, 40, 40);
 	}
 	public void voice(){
 		ImageIcon image = new ImageIcon(arr.getOpen().getArrWords().getADDRESSIMAGE() + "Voice.png");
 		Image cur = image.getImage().getScaledInstance(30, 30, Image.SCALE_DEFAULT);
 		voiceButton.setIcon(new ImageIcon(cur));
 		voiceButton.setBackground(Color.white);
+		voiceButton.setBorder(null);
 		voiceButton.setFocusable(false);
 		voiceButton.setHorizontalTextPosition(JButton.CENTER);
+		voiceButton.setVisible(false);
 		voiceButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				String oldKey = "";
-				if(listArray.getSelectedValue() != null){
-					oldKey = listArray.getSelectedValue();
-				}
-				else{
-					oldKey = textKey.getText();
-				}
-				final String key = oldKey;
+				final String key = textValue.getText();
 				if(key.length() > 0){
 					Thread voiceThread = new Thread(new Runnable() {
 	                    @SuppressWarnings("static-access")
@@ -149,19 +156,34 @@ public class Panel extends JPanel{
 	}
 
 	public void newText(){
-		textValue.setContentType("text/html");
+		textExplain.setContentType("text/html");
 		textKey.setBackground(Color.WHITE);
 		textSearch.setText("Search");
-		textValue.setText("<html><i>Definition</i><html>");
+		textExplain.setText("<html><i>Definition</i><html>");
+		textValue.setEditable(false);
+		textValue.setBackground(Color.white);
+		Font initialFont = new Font("Arial", Font.PLAIN, 40);
+	    textValue.setFont(initialFont);
+	    FontMetrics fm = textValue.getFontMetrics(initialFont);
+	    int textWidth = fm.stringWidth(textValue.getText());
+	    int availableWidth = textValue.getWidth();
+	    if (textWidth > 0 && availableWidth > 0) {
+	        float scale = (float) availableWidth / textWidth;
+	        int newFontSize = Math.round(initialFont.getSize() * scale);
+	        textValue.setFont(initialFont.deriveFont((float) newFontSize));
+	    }
 		textSearch.setFont(new Font("Cambria", Font.PLAIN, 20));
-		textValue.setFont(new Font("Cambria", Font.PLAIN, 20));
+		textArea.setEditable(false);
+		textArea.setFont(new Font("Arial", Font.PLAIN, 16));
+		textArea.setBorder(null);
 		textKey.setFont(new Font("Cambria", Font.PLAIN, 20));
 		textKey.setForeground(Color.black);
 		textKey.setCaretColor(Color.black);
 		textSearch.setForeground(Color.black);
-		textKey.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
+		textKey.setBorder(BorderFactory.createLineBorder(Color.black, 2));
 		textKey.add(textSearch);
-		textValue.setEditable(false);
+		textExplain.setEditable(false);
+		scrollpane.setBorder(null);
 	}
 	public void newLabel(){
 		labelLeft.setText("Advanced English Dictionary");
@@ -188,7 +210,9 @@ public class Panel extends JPanel{
 		            String selectedValue = listArray.getSelectedValue();
 		            if(selectedValue != null){
 		            	String stringValue = arr.dictionarySearcher(selectedValue, flag);
-			            textValue.setText(stringValue == null ? "" : stringValue);
+		            	textValue.setText(selectedValue);
+		            	voiceButton.setVisible(true);
+			            textExplain.setText(stringValue == null ? "" : stringValue);
 		            }
 		        }
 		    }
@@ -216,7 +240,7 @@ public class Panel extends JPanel{
 				// TODO Auto-generated method stub
 				String key = textKey.getText();
 		        String value = arr.dictionarySearcher(key, flag);
-		        textValue.setText(value == null ? "Not Found!!" : value);
+		        textExplain.setText(value == null ? "Not Found!!" : value);
 			}
 		});
 	}
@@ -224,6 +248,14 @@ public class Panel extends JPanel{
 	    String key = textKey.getText();
 	    textSearch.setText(key.isEmpty() ? "Search" : "");
 	    textSearch.setVisible(key.isEmpty());
+	    if(!key.isEmpty()){
+	    	key = key.substring(0, 1).toUpperCase() + key.substring(1).toLowerCase();
+	    }
+	    else {
+	    	textValue.setText("");
+	    	textExplain.setText("<htm><i>Definition</i><htm>");
+	    	voiceButton.setVisible(false);
+	    }
 	    ArrayList<String> list = arr.dictionarySearcher(key);
 	    listArray.setListData(list.toArray(new String[0]));
 	    if (!list.isEmpty()) {
