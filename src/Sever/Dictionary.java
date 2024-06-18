@@ -1,15 +1,16 @@
 package Sever;
 
-import java.util.Map;
 import java.util.TreeMap;
 
 public class Dictionary {
-	private final Map<String,String> tree = new TreeMap<String, String>();
-	public Map<String, String> getTree() {
-		return this.tree;
+	private final TreeMap<String,String> treeEngVi = new TreeMap<String, String>();
+	public TreeMap<String, String> getTree() {
+		return this.treeEngVi;
 	}
-	
-	
+	private final TreeMap<String, String> treeViEng = new TreeMap<String,String>();
+	public TreeMap<String, String> getTreeVE(){
+		return this.treeViEng;
+	}
 	
 }
 

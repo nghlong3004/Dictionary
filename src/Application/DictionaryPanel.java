@@ -22,6 +22,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
@@ -46,9 +47,9 @@ public class DictionaryPanel extends JPanel{
 	public DictionaryCommandLine getArr() {
 		return arr;
 	}
-	private JTextField textKey;
+	private JTextField textKey,textValue;
 	private JEditorPane textExplain;
-	private JTextArea textArea, textValue;
+	private JTextArea textArea;
 	public JTextField getTextKey() {
 		return textKey;
 	}
@@ -75,12 +76,19 @@ public class DictionaryPanel extends JPanel{
 		addImplement();
 	}
 	public void newElement(){
+		try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception e) {
+            e.printStackTrace();
+        } 
+        UIManager.put("ScrollBar.thumb", new Color(0, 128, 0)); 
+        UIManager.put("ScrollBar.track", new Color(220, 220, 220));
 		arr = new DictionaryCommandLine();
 		voiceButton = new JButton();
 		languages = new SelectLanguage();
 		textKey = new JTextField();
 		textExplain = new JEditorPane();
-		textValue = new JTextArea();
+		textValue = new JTextField();
 		textArea = new JTextArea();
 		textSearch = new JLabel();
 		labelLeft = new JLabel();
@@ -89,6 +97,8 @@ public class DictionaryPanel extends JPanel{
 		listArray = new JList<String>(list.toArray(new String[list.size()]));
 		scrollpane = new JScrollPane(textExplain);
 		scroll = new JScrollPane(listArray);
+		scroll.setBorder(BorderFactory.createLineBorder(Color.black, 2));
+		
 	}
 	public void resetClick(){
 		textValue.setText("");
@@ -121,7 +131,7 @@ public class DictionaryPanel extends JPanel{
 		labelLeft.setBounds(0, 0, Constants.WEIGHT, Constants.HEIGHT * 2);
 		labelRight.setBounds(Constants.WEIGHT, 0, Constants.WEIGHT, Constants.HEIGHT * 2);
 		int wArea = Constants.WEIGHT - 30, hArea = Constants.HEIGHT * 3 / 2;
-		textValue.setBounds(0, 20, wArea - 39, hArea);
+		textValue.setBounds(4, 0, wArea - 39, hArea);
 		voiceButton.setBounds(wArea - 40, hArea - 40 >> 1, 40, 40);
 	}
 	public void voice(){
@@ -154,11 +164,14 @@ public class DictionaryPanel extends JPanel{
 
 	public void newText(){
 		textExplain.setContentType("text/html");
+		textExplain.setCaretColor(Color.white);
 		textKey.setBackground(Color.WHITE);
 		textSearch.setText("Search");
 		textExplain.setText("<html><i>Definition</i><html>");
+		textExplain.setBorder(BorderFactory.createLineBorder(Color.black, 2));
 		textValue.setEditable(false);
 		textValue.setBackground(Color.white);
+		textValue.setCaretColor(Color.white);
 		Font initialFont = new Font("Arial", Font.PLAIN, 40);
 	    textValue.setFont(initialFont);
 	    FontMetrics fm = textValue.getFontMetrics(initialFont);
@@ -177,7 +190,8 @@ public class DictionaryPanel extends JPanel{
 		textKey.setForeground(Color.black);
 		textKey.setCaretColor(Color.black);
 		textSearch.setForeground(Color.black);
-		textKey.setBorder(BorderFactory.createLineBorder(Color.black, 2));
+		textKey.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
+		textValue.setBorder(null);
 		textKey.add(textSearch);
 		textExplain.setEditable(false);
 		scrollpane.setBorder(null);
@@ -238,7 +252,6 @@ public class DictionaryPanel extends JPanel{
 				String key = textKey.getText().trim();
 		        String value = DictionaryCommandLine.dictionarySearcher(key, flag);
 		        if((value == null || value.isEmpty()) && (key != null)) {
-		        	System.out.println("no error");
 		        	key = key.substring(0, 1).toUpperCase() + key.substring(1).toLowerCase();
 		        	new Thread(() -> {
 			    		try {
@@ -255,6 +268,8 @@ public class DictionaryPanel extends JPanel{
 					}).start();
 		        }
 		        else {
+		        	voiceButton.setVisible(true);
+		        	textValue.setText(textKey.getText());
 		        	textExplain.setText(value);
 		        }
 			}
