@@ -1,6 +1,6 @@
 package Sever;
 
-public class Constants {
+public interface Constants {
 	public static final String IMAGE_FILE_PATH = "image\\";
 	
 	public static final String INPUT_FILE_PATH = "data.txt";
